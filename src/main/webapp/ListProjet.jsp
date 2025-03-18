@@ -171,7 +171,7 @@
     <a href="index.jsp" class="navbar-brand">Construction<span style="color: #D76C82;">Xpert</span></a>
     <div class="button-group">
 
-        <a href="add-project.jsp" class="icon-btn btn-custom" title="Nouveau Projet"><i class="bi bi-plus-circle"></i></a>
+        <a href="AjouterProjet.jsp" class="icon-btn btn-custom" title="Nouveau Projet"><i class="bi bi-plus-circle"></i></a>
     </div>
 </div>
 
@@ -203,9 +203,9 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5><%= projet.getNom() %></h5>
                         <div class="button-group">
-                            <a href="project-details.jsp?id=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Voir"><i class="bi bi-eye"></i></a>
-                            <a href="add-project.jsp?id=<%= projet.getId_projet() %>" class="icon-btn btn-modifier" title="Modifier"><i class="bi bi-pencil"></i></a>
-                            <a href="ProjectServlet?action=delete&id=<%= projet.getId_projet() %>" class="icon-btn btn-supprimer" title="Supprimer" onclick="return confirm('Voulez-vous supprimer ce projet ?');"><i class="bi bi-trash"></i></a>
+                            <a href="DashboardProjet.jsp<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Voir"><i class="bi bi-eye"></i></a>
+                            <a href="EditeProjet.jsp?id=<%= projet.getId_projet() %>" class="icon-btn btn-modifier" title="Modifier"><i class="bi bi-pencil"></i></a>
+                            <a href="ListProjet.jsp?id=<%= projet.getId_projet() %>" class="icon-btn btn-supprimer" title="Supprimer" onclick="return confirm('Voulez-vous supprimer ce projet ?');"><i class="bi bi-trash"></i></a>
                         </div>
                     </div>
                     <p>📅 <%= projet.getDate_de_Début() %> - <%= projet.getDate_de_Fin() %></p>

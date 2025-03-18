@@ -29,13 +29,12 @@ public class ProjetServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Projet> projets = projetDao.getProjetList(); // Fetch projects from DB
+        List<Projet> projets = projetDao.getProjetList();
         request.setAttribute("projets", projets);
-        System.out.println("Nombre de projets récupérés: " + projets.size()); // Debugging log
+        System.out.println("Nombre de projets récupérés: " + projets.size());
         RequestDispatcher dispatcher = request.getRequestDispatcher("ListProjet.jsp");
         dispatcher.forward(request, response);
     }
-
 
 
     @Override
@@ -43,32 +42,28 @@ public class ProjetServlet extends HttpServlet {
 
         try {
 
-                String Nom = req.getParameter("projectName");
-                String description = req.getParameter("projectDescription");
-                Date Date_de_Debut = java.sql.Date.valueOf(req.getParameter("startDate"));
-                Date Date_de_Fin = java.sql.Date.valueOf(req.getParameter("endDate"));
-                Double Budget = Double.parseDouble(req.getParameter("budget"));
-                if (Nom == null || description == null || Date_de_Debut == null || Date_de_Fin == null || Budget == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Veuillez remplir tous les champs");
-                    return;
-                }
+            String Nom = req.getParameter("projectName");
+            String description = req.getParameter("projectDescription");
+            Date Date_de_Debut = java.sql.Date.valueOf(req.getParameter("startDate"));
+            Date Date_de_Fin = java.sql.Date.valueOf(req.getParameter("endDate"));
+            Double Budget = Double.parseDouble(req.getParameter("budget"));
+            if (Nom == null || description == null || Date_de_Debut == null || Date_de_Fin == null || Budget == null) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Veuillez remplir tous les champs");
+                return;
+            }
 
 
-                Projet projet = new Projet(Nom, description, Date_de_Debut, Date_de_Fin, Budget);
-                projetDao.AjouterProjet(projet);
-                resp.sendRedirect("ProjectServlet");
-
-
-
+            Projet projet = new Projet(Nom, description, Date_de_Debut, Date_de_Fin, Budget);
+            projetDao.AjouterProjet(projet);
+            resp.sendRedirect("ProjectServlet");
 
 
         } catch (Exception e) {
             req.setAttribute("errorMessage", "Erreur lors de l'ajout du projet : " + e.getMessage());
             req.getRequestDispatcher("/AjouterProjet.jsp").forward(req, resp);
         }
-    }
 
 
-}
+    }}
 
 

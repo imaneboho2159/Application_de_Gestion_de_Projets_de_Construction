@@ -80,8 +80,9 @@ public class ProjetDao {
     }
 
 
-    public void updateProjet(Projet projet) {
+    public boolean updateProjet(Projet projet,int id) {
         String query = "UPDATE projet SET nom=?, description=?, Date_de_Début=?, Date_de_Fin=?, Budget=? WHERE id_projet=?";
+        boolean result = false;
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -90,13 +91,16 @@ public class ProjetDao {
             preparedStatement.setDate(3, new java.sql.Date(projet.getDate_de_Début().getTime()));
             preparedStatement.setDate(4, new java.sql.Date(projet.getDate_de_Fin().getTime()));
             preparedStatement.setDouble(5, projet.getBudget());
-
+            preparedStatement.setInt(6, id);
 
             preparedStatement.executeUpdate();
+            result = true;
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     public void deleteProjet(int id) {

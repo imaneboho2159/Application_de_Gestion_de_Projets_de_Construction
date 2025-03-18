@@ -27,14 +27,23 @@ public class ProjetServlet extends HttpServlet {
 
     @Override
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<Projet> projets = projetDao.getProjetList();
-        request.setAttribute("projets", projets);
-        System.out.println("Nombre de projets récupérés: " + projets.size());
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ListProjet.jsp");
-        dispatcher.forward(request, response);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Projet> projets = projetDao.getProjetList(); // Fetch updated list
+        req.setAttribute("projets", projets);
+
+        String successMessage = req.getParameter("successMessage");
+        String errorMessage = req.getParameter("errorMessage");
+
+        if (successMessage != null) {
+            req.setAttribute("successMessage", successMessage);
+        }
+        if (errorMessage != null) {
+            req.setAttribute("errorMessage", errorMessage);
+        }
+
+        req.getRequestDispatcher("ListProjet.jsp").forward(req, resp);
     }
+
 
 
     @Override

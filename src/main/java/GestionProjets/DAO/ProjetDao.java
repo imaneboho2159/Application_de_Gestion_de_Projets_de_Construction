@@ -102,17 +102,17 @@ public class ProjetDao {
         }
         return result;
     }
-
-    public void deleteProjet(int id) {
+    public boolean deleteProjet(int id) {
         String query = "DELETE FROM projet WHERE id_projet = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate(); // Get affected rows
 
+            return rowsAffected > 0; // If at least one row was deleted, return true
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;}
     }
-}

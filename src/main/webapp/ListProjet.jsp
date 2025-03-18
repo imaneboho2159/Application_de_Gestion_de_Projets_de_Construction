@@ -6,9 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConstructionXpert - Projets</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body {
@@ -203,9 +202,12 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5><%= projet.getNom() %></h5>
                         <div class="button-group">
-                            <a href="DashboardProjet.jsp<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Voir"><i class="bi bi-eye"></i></a>
+                            <a href="ViewProjetServlet?id=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Voir"><i class="bi bi-eye"></i></a>
                             <a href="EditeProjet.jsp?id=<%= projet.getId_projet() %>" class="icon-btn btn-modifier" title="Modifier"><i class="bi bi-pencil"></i></a>
-                            <a href="ListProjet.jsp?id=<%= projet.getId_projet() %>" class="icon-btn btn-supprimer" title="Supprimer" onclick="return confirm('Voulez-vous supprimer ce projet ?');"><i class="bi bi-trash"></i></a>
+                            <a href="supprimerServlet?id_projet=<%= projet.getId_projet() %>" class="icon-btn btn-supprimer" title="Supprimer" onclick="return confirm('Voulez-vous supprimer ce projet ?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+
                         </div>
                     </div>
                     <p>📅 <%= projet.getDate_de_Début() %> - <%= projet.getDate_de_Fin() %></p>

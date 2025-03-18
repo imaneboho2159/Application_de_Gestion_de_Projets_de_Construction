@@ -54,7 +54,7 @@ public class Projet {
         Description = description;
     }
 
-    public java.sql.Date getDate_de_Début() {
+    public Date getDate_de_Début() {
         return Date_de_Début;
     }
 
@@ -62,7 +62,7 @@ public class Projet {
         Date_de_Début = date_de_Début;
     }
 
-    public java.sql.Date getDate_de_Fin() {
+    public Date getDate_de_Fin() {
         return Date_de_Fin;
     }
 
@@ -76,5 +76,17 @@ public class Projet {
 
     public void setBudget(Double budget) {
         Budget = budget;
+    }
+
+    @Override
+    public String toString() {
+        return "Projet{" +
+                "id_projet=" + id_projet +
+                ", Nom='" + Nom + '\'' +
+                ", Description='" + Description + '\'' +
+                ", Date_de_Début=" + Date_de_Début +
+                ", Date_de_Fin=" + Date_de_Fin +
+                ", Budget=" + Budget +
+                '}';
     }
 }

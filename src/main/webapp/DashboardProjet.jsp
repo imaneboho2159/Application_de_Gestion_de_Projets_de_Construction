@@ -127,9 +127,9 @@
                 <i class="bi bi-pencil"></i>
             </a>
         </div>
-        <p><strong>Description:</strong> Construction d'un immeuble de bureaux moderne.</p>
+        <p><strong>Description:</strong> <%= projet.getDescription() %></p>
         <p><strong>Dates:</strong> <%= projet.getDate_de_Début() %> - <%= projet.getDate_de_Fin() %></p>
-        <p><strong>Budget:</strong> €<%= projet.getBudget() %></p>
+        <p><strong>Budget:</strong> DH<%= projet.getBudget() %></p>
     </div>
 
     <div class="mb-3">

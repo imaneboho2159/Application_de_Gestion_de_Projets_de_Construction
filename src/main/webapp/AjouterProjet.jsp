@@ -87,7 +87,9 @@
             </div>
             <div class="mb-2">
                 <label for="start-date" class="form-label">Début</label>
-                <input type="date" class="form-control" id="start-date" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>" required>
+                <input type="date" class="form-control" id="start-date" name="startDate"   value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>" required>
+
+
             </div>
             <div class="mb-2">
                 <label for="end-date" class="form-label">Fin</label>
@@ -105,7 +107,51 @@
     </div>
 </div>
 
+<script>
 
+        document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const startDateInput = document.getElementById("start-date");
+        const endDateInput = document.getElementById("end-date");
+        const budgetInput = document.getElementById("budget");
+
+        form.addEventListener("submit", function(event) {
+        const today = new Date().toISOString().split("T")[0];
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+        const budget = budgetInput.value;
+        let isValid = true;
+        let errorMessage = "";
+
+
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(endDate);
+        const todayObj = new Date();
+
+        if (startDateObj < todayObj) {
+        errorMessage += "La date de début ne doit pas être dans le passé.\n";
+        isValid = false;
+    }
+
+        if (endDateObj <= startDateObj) {
+        errorMessage += "La date de fin doit être après la date de début.\n";
+        isValid = false;
+    }
+
+        if (budget === "" || parseFloat(budget) <= 0) {
+        errorMessage += "Le budget doit être un nombre positif.\n";
+        isValid = false;
+    }
+
+        if (!isValid) {
+        alert(errorMessage);
+        event.preventDefault();
+    }
+    });
+    });
+</script>
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

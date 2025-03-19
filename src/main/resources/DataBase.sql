@@ -16,7 +16,7 @@ create table tache(
                       description varchar (500),
                       Date_de_Début  Date,
                       Date_de_Fin  Date,
-                      Ressorces_Nécessaires varchar(500),
+
                       foreign key (id_projet) references projet(id_projet)
 );
 
@@ -26,7 +26,7 @@ create table ressorce (
                           name varchar(100),
                           type varchar (100),
                           quantity int,
-                          Informations_du_Fournisseur varchar(300),
-                          foreign key (id_tache) references tache(id_tache)
+
+                        foreign key (id_tache) references tache(id_tache)
 
 );

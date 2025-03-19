@@ -19,20 +19,25 @@ public class TacheDao {
     }
 
     public void AjouterTache(Tache tache) throws SQLException {
+        String query = "INSERT INTO tache (id_projet, description, Date_de_Début, Date_de_Fin) VALUES (?, ?, ?, ?)";
 
-        String query = "INSERT INTO tache(description,Date_de_Début,Date_de_Fin ) values(?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, tache.getDescription());
-            preparedStatement.setDate(2, tache.getDate_de_Début());
-            preparedStatement.setDate(3, tache.getDate_de_Fin());
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(1, tache.getId_projet());
+            preparedStatement.setString(2, tache.getDescription());
+            preparedStatement.setDate(3, tache.getDate_de_Début());
+            preparedStatement.setDate(4, tache.getDate_de_Fin());
 
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Task added successfully!");
+            } else {
+                System.out.println("Failed to add task.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException("Erreur lors de l'ajout de la tâche: " + e.getMessage());
         }
-
     }
-
     public List<Tache> getTachesList() throws SQLException {
         List<Tache> taches = new ArrayList<>();
         String query = "SELECT * FROM tache ";
@@ -99,6 +104,19 @@ public class TacheDao {
         }
         return true;
     }
+    public boolean projetExiste(int projectId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Projet WHERE id_projet = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, projectId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
 
 }
 

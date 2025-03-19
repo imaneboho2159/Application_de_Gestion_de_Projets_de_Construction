@@ -72,4 +72,14 @@ public class Tache {
         return Date_de_Fin;
     }
 
+    @Override
+    public String toString() {
+        return "Tache{" +
+                "id_tache=" + id_tache +
+                ", id_projet=" + id_projet +
+                ", description='" + description + '\'' +
+                ", Date_de_Début=" + Date_de_Début +
+                ", Date_de_Fin=" + Date_de_Fin +
+                '}';
+    }
 }

@@ -74,11 +74,8 @@
 <div class="container">
     <div class="form-container">
         <h4>Ajouter une Tâche</h4>
-        <form action="TaskServlet" method="post">
-            <div class="mb-2">
-                <label for="task-name" class="form-label">Nom de la Tâche</label>
-                <input type="text" class="form-control" id="task-name" name="taskName" required>
-            </div>
+        <form action="TacheServlet" method="post">
+
             <div class="mb-2">
                 <label for="task-description" class="form-label">Description</label>
                 <textarea class="form-control" id="task-description" name="taskDescription" rows="2" required></textarea>
@@ -90,9 +87,18 @@
             <div class="mb-2">
                 <label for="end-date" class="form-label">Date de Fin</label>
                 <input type="date" class="form-control" id="end-date" name="endDate" required>
-            </div>
-            <input type="hidden" name="projectId" value="<%= request.getParameter("projectId") %>">
-            <button type="submit" class="btn btn-custom">Valider</button>
+                    <%
+    String projectId = request.getParameter("projectId");
+    if (projectId != null && projectId.matches("\\d+")) {
+%>
+                <input type="hidden" name="projectId" value="<%= projectId %>">
+                    <% } else { %>
+                <p style="color:red;">Erreur : ID du projet manquant ou invalide !</p>
+                    <% } %>
+
+
+
+                <button type="submit" class="btn btn-custom">Valider</button>
         </form>
     </div>
 </div>

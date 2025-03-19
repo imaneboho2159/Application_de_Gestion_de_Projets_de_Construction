@@ -134,7 +134,7 @@
 
     <div class="mb-3">
         <div class="button-group">
-            <a href="AjouterTache.jsp?id_Projet=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Tâche">
+            <a href="AjouterTache.jsp?projectId=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Tâche">
                 <i class="bi bi-plus-circle"></i>
             </a>
 

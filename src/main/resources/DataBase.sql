@@ -16,8 +16,8 @@ create table tache(
                       description varchar (500),
                       Date_de_Début  Date,
                       Date_de_Fin  Date,
-
-                      foreign key (id_projet) references projet(id_projet)
+                      Ressorces_Nécessaires varchar(500),
+                      foreign key (id_projet) references projet(id_projet) on delete cascade
 );
 
 create table ressorce (
@@ -27,6 +27,5 @@ create table ressorce (
                           type varchar (100),
                           quantity int,
 
-                        foreign key (id_tache) references tache(id_tache)
-
+                          foreign key (id_tache) references tache(id_tache)on delete cascade
 );

@@ -28,7 +28,7 @@ public class TacheServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            // Récupérer et valider projectId
+
             String projectIdStr = req.getParameter("projectId");
             if (projectIdStr == null || projectIdStr.trim().isEmpty() || !projectIdStr.matches("\\d+")) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'ID du projet est requis et doit être un nombre valide.");
@@ -36,20 +36,20 @@ public class TacheServlet extends HttpServlet {
             }
             int projectId = Integer.parseInt(projectIdStr);
 
-            // Vérifier que le projet existe (optionnel, dépend de ton DAO)
+
             if (!tacheDao.projetExiste(projectId)) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Le projet spécifié n'existe pas.");
                 return;
             }
 
-            // Récupérer et valider la description
+
             String description = req.getParameter("taskDescription");
             if (description == null || description.trim().isEmpty()) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "La description de la tâche est requise.");
                 return;
             }
 
-            // Récupérer et valider les dates
+
             String startDateStr = req.getParameter("startDate");
             String endDateStr = req.getParameter("endDate");
 

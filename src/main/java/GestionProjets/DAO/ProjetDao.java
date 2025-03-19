@@ -40,7 +40,7 @@ public class ProjetDao {
                 projet = new Projet(
                         resultSet.getInt("id_projet"),
                         resultSet.getString("nom"),
-                        resultSet.getString("description"),  // Removed extra space
+                        resultSet.getString("description"),
                         resultSet.getDate("Date_de_Début"),
                         resultSet.getDate("Date_de_Fin"),
                         resultSet.getDouble("Budget")

@@ -134,12 +134,10 @@
 
     <div class="mb-3">
         <div class="button-group">
-            <a href="AddTaskServlet?idProjet=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Tâche">
+            <a href="AjouterTache.jsp?id_Projet=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Tâche">
                 <i class="bi bi-plus-circle"></i>
             </a>
-            <a href="AddResourceServlet?idProjet=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter des Ressources (Projet)">
-                <i class="bi bi-box-seam"></i>
-            </a>
+
         </div>
     </div>
 
@@ -193,9 +191,9 @@
 <%--                    }--%>
 <%--                }--%>
 <%--            %>--%>
-<%--        </ul>--%>
-<%--    </div>--%>
-<%--</div>--%>
+        </ul>
+    </div>
+</div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

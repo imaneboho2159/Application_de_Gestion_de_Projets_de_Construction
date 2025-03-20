@@ -1,17 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="GestionProjets.Model.Projet" %>
+<%@ page import="GestionTaches.Model.Tache" %>
+<%@ page import="java.util.List" %>
+<%@ page import="GestionTaches.DAO.TacheDao" %>
 
-<%
-    Projet projet = (Projet) request.getAttribute("projet");
-    if (projet == null) {
-        response.sendRedirect("ListProjetServlet?errorMessage=Aucun projet trouvé avec cet ID");
-        return;
-    }
-%>
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,12 +105,23 @@
 </head>
 
 <body>
+<%
+    Projet projet = (Projet) request.getAttribute("projet");
+    TacheDao tacheDao= new TacheDao();
+    List<Tache> taches   = (List<Tache>) tacheDao.getTachesByProjetId(projet.getId_projet());
+
+    if (projet == null) {
+        response.sendRedirect("ProjectServlet?errorMessage=Aucun projet trouvé avec cet ID");
+        return;
+    }
+%>
 
 <div class="navbar">
     <a href="index.jsp" class="navbar-brand">Construction<span style="color: #D76C82;">Xpert</span></a>
     <div class="button-group">
-
-        <a href="ProjectServlet" class="icon-btn btn-custom" title="Retour aux Projets"><i class="bi bi-arrow-left"></i></a>
+        <a href="ProjectServlet" class="icon-btn btn-custom" title="Retour aux Projets">
+            <i class="bi bi-arrow-left"></i>
+        </a>
     </div>
 </div>
 
@@ -137,66 +143,32 @@
             <a href="AjouterTache.jsp?projectId=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Tâche">
                 <i class="bi bi-plus-circle"></i>
             </a>
-
         </div>
     </div>
 
     <div class="mt-4">
+
         <h5>Liste des Tâches</h5>
         <ul class="list-group mb-4">
-<%--            &lt;%&ndash; Dynamically fetch tasks from the database &ndash;%&gt;--%>
-<%--            <%--%>
-<%--                if (projet.getTaches() != null) {--%>
-<%--                    for (var tache : projet.getTaches()) {--%>
-<%--            %>--%>
-<%--            <li class="list-group-item">--%>
-<%--                <div class="d-flex justify-content-between align-items-center">--%>
-<%--                    <span><%= tache.getNom() %> (Échéance: <%= tache.getDateEcheance() %>)</span>--%>
-<%--                    <div class="button-group">--%>
-<%--                        <a href="AddResourceToTaskServlet?idProjet=<%= projet.getId_projet() %>&idTache=<%= tache.getId() %>" class="icon-btn btn-custom" title="Ajouter des Ressources">--%>
-<%--                            <i class="bi bi-box-seam"></i>--%>
-<%--                        </a>--%>
-<%--                        <a href="EditTaskServlet?idTache=<%= tache.getId() %>" class="icon-btn btn-modifier" title="Modifier">--%>
-<%--                            <i class="bi bi-pencil"></i>--%>
-<%--                        </a>--%>
-<%--                        <a href="DeleteTaskServlet?idTache=<%= tache.getId() %>" class="icon-btn btn-supprimer" title="Supprimer">--%>
-<%--                            <i class="bi bi-trash"></i>--%>
-<%--                        </a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <ul class="list-group task-resources">--%>
-<%--                    <%--%>
-<%--                        if (tache.getRessources() != null) {--%>
-<%--                            for (var ressource : tache.getRessources()) {--%>
-<%--                    %>--%>
-<%--                    <li class="list-group-item d-flex justify-content-between align-items-center">--%>
-<%--                        <%= ressource.getNom() %> - Type: <%= ressource.getType() %>, Quantité: <%= ressource.getQuantite() %>--%>
-<%--                        <div class="button-group">--%>
-<%--                            <a href="EditResourceServlet?idRessource=<%= ressource.getId() %>" class="icon-btn btn-modifier" title="Modifier">--%>
-<%--                                <i class="bi bi-pencil"></i>--%>
-<%--                            </a>--%>
-<%--                            <a href="DeleteResourceServlet?idRessource=<%= ressource.getId() %>" class="icon-btn btn-supprimer" title="Supprimer">--%>
-<%--                                <i class="bi bi-trash"></i>--%>
-<%--                            </a>--%>
-<%--                        </div>--%>
-<%--                    </li>--%>
-<%--                    <%--%>
-<%--                            }--%>
-<%--                        }--%>
-<%--                    %>--%>
-<%--                </ul>--%>
-<%--            </li>--%>
-<%--            <%--%>
-<%--                    }--%>
-<%--                }--%>
-<%--            %>--%>
+            <% if (taches == null) { %>
+            <li class="list-group-item text-center text-danger"> Erreur: La liste des tâches est null.</li>
+            <% } else if (taches.isEmpty()) { %>
+            <li class="list-group-item text-center text-danger"> Aucune tâche trouvée pour ce projet.</li>
+            <% } else { %>
+            <% for (Tache tache : taches) { %>
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span> <%= tache.getDescription() %> (Début: <%= tache.getDate_de_Début() %>, Fin: <%= tache.getDate_de_Fin() %>)</span>
+                </div>
+            </li>
+            <% } %>
+            <% } %>
         </ul>
+
     </div>
 </div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

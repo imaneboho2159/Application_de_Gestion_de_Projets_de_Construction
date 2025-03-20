@@ -1,6 +1,9 @@
 package GestionProjets.Model;
 
+import GestionTaches.Model.Tache;
+
 import java.util.Date;
+import java.util.List;
 
 public class Projet {
     private int id_projet;
@@ -9,6 +12,7 @@ public class Projet {
     private Date Date_de_Début;
     private Date Date_de_Fin;
     private  Double Budget;
+    private List<Tache> taches;
 
     public Projet(int id_projet, String nom, String description, Date date_de_Début, Date date_de_Fin, Double budget) {
         this.id_projet = id_projet;
@@ -76,6 +80,14 @@ public class Projet {
 
     public void setBudget(Double budget) {
         Budget = budget;
+    }
+
+    public List<Tache> getTaches() {
+        return taches;
+    }
+
+    public void setTaches(List<Tache> taches) {
+        this.taches = taches;
     }
 
     @Override

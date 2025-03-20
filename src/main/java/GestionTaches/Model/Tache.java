@@ -9,6 +9,7 @@ public class Tache {
     private String description;
     private Date Date_de_Début;
     private Date Date_de_Fin ;
+//    private List<Ressource> ressources;
 
 
     public Tache(int id_tache, int id_projet, String description, Date date_de_Début, Date date_de_Fin) {
@@ -26,7 +27,7 @@ public class Tache {
         Date_de_Fin = date_de_Fin;
     }
 
-    public Tache(String description, java.sql.Date dateDeDébut, java.sql.Date dateDeFin) {
+    public Tache() {
     }
 
     public Tache(int idTache) {
@@ -71,6 +72,8 @@ public class Tache {
     public java.sql.Date getDate_de_Fin() {
         return Date_de_Fin;
     }
+
+
 
     @Override
     public String toString() {

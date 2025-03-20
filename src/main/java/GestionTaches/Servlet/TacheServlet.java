@@ -1,8 +1,9 @@
 package GestionTaches.Servlet;
 
+import GestionProjets.DAO.ProjetDao;
+import GestionProjets.Model.Projet;
 import GestionTaches.DAO.TacheDao;
 import GestionTaches.Model.Tache;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,83 +12,108 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/TacheServlet")
 public class TacheServlet extends HttpServlet {
     private TacheDao tacheDao;
+    private ProjetDao projetDao;
 
     @Override
     public void init() throws ServletException {
         try {
             tacheDao = new TacheDao();
+            projetDao = new ProjetDao();
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur de connexion à la base de données : " + e.getMessage());
+            throw new ServletException("Erreur de connexion à la base de données : " + e.getMessage());
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String projetIdParam = request.getParameter("idProjet");
+        if (projetIdParam == null || projetIdParam.isEmpty()) {
+            request.setAttribute("errorMessage", "ID du projet manquant.");
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+            return;
+        }
 
-            String projectIdStr = req.getParameter("projectId");
-            if (projectIdStr == null || projectIdStr.trim().isEmpty() || !projectIdStr.matches("\\d+")) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'ID du projet est requis et doit être un nombre valide.");
+        int idProjet = Integer.parseInt(projetIdParam);
+        Projet projet = projetDao.getProjetById(idProjet);
+        if (projet == null) {
+            request.setAttribute("errorMessage", "Aucun projet trouvé.");
+            request.getRequestDispatcher("errorPage.jsp").forward(request, response);
+            return;
+        }
+
+        List<Tache> taches = null;
+        try {
+            taches = tacheDao.getTachesByProjetId(idProjet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        request.setAttribute("projet", projet);
+        request.setAttribute("taches", taches);
+        request.getRequestDispatcher("DashboardProjet.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Get form data
+            String projectIdStr = request.getParameter("projectId");
+            String description = request.getParameter("taskDescription");
+            String startDateStr = request.getParameter("startDate");
+            String endDateStr = request.getParameter("endDate");
+
+            // Log the input data
+            System.out.println("Ajout de tâche - projectId: " + projectIdStr + ", description: " + description +
+                    ", startDate: " + startDateStr + ", endDate: " + endDateStr);
+
+            // Validate inputs
+            if (projectIdStr == null || projectIdStr.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID du projet manquant.");
                 return;
             }
             int projectId = Integer.parseInt(projectIdStr);
 
-
-            if (!tacheDao.projetExiste(projectId)) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Le projet spécifié n'existe pas.");
-                return;
-            }
-
-
-            String description = req.getParameter("taskDescription");
             if (description == null || description.trim().isEmpty()) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "La description de la tâche est requise.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Description requise.");
+                return;
+            }
+            if (startDateStr == null || endDateStr == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Dates requises.");
                 return;
             }
 
+            Date startDate = Date.valueOf(startDateStr);
+            Date endDate = Date.valueOf(endDateStr);
 
-            String startDateStr = req.getParameter("startDate");
-            String endDateStr = req.getParameter("endDate");
-
-            if (startDateStr == null || startDateStr.isEmpty() || endDateStr == null || endDateStr.isEmpty()) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Les dates de début et de fin sont requises.");
+            if (endDate.before(startDate)) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "La date de fin ne peut pas être avant la date de début.");
                 return;
             }
 
-            Date dateDeDebut = Date.valueOf(startDateStr);
-            Date dateDeFin = Date.valueOf(endDateStr);
+            // Create and add the task
+            Tache tache = new Tache(projectId, description, startDate, endDate);
+            tacheDao.ajouterTache(tache);
 
-            if (dateDeFin.before(dateDeDebut)) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "La date de fin ne peut pas être avant la date de début.");
-                return;
-            }
+            // Log success
+            System.out.println("Tâche ajoutée avec succès pour projectId: " + projectId);
 
-            // Debugging (affiche les valeurs dans la console)
-            System.out.println("Project ID: " + projectId);
-            System.out.println("Description: " + description);
-            System.out.println("Start Date: " + dateDeDebut);
-            System.out.println("End Date: " + dateDeFin);
+            // Redirect to view the project
+            response.sendRedirect("ViewProjetServlet?id=" + projectId);
 
-            // Créer et ajouter la tâche
-            Tache tache = new Tache(projectId, description, dateDeDebut, dateDeFin);
-            tacheDao.AjouterTache(tache);
-
-            // Rediriger vers la liste des tâches avec le bon projectId
-            resp.sendRedirect("ListTache.jsp?projectId=" + projectId);
-
-        } catch (NumberFormatException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Format d'ID de projet invalide.");
         } catch (SQLException e) {
-            req.setAttribute("errorMessage", "Erreur lors de l'ajout de la tâche : " + e.getMessage());
-            req.getRequestDispatcher("/AjouterTache.jsp").forward(req, resp);
+            System.out.println("Erreur SQL lors de l'ajout de la tâche : " + e.getMessage());
+            request.setAttribute("errorMessage", "Erreur SQL : " + e.getMessage());
+            request.getRequestDispatcher("AjouterTache.jsp").forward(request, response);
         } catch (Exception e) {
-            req.setAttribute("errorMessage", "Une erreur est survenue : " + e.getMessage());
-            req.getRequestDispatcher("/AjouterTache.jsp").forward(req, resp);
+            System.out.println("Erreur inattendue : " + e.getMessage());
+            request.setAttribute("errorMessage", "Erreur inattendue : " + e.getMessage());
+            request.getRequestDispatcher("AjouterTache.jsp").forward(request, response);
         }
     }
-
 }

@@ -28,7 +28,7 @@ public class ProjetServlet extends HttpServlet {
     @Override
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Projet> projets = projetDao.getProjetList(); // Fetch updated list
+        List<Projet> projets = projetDao.getProjetList();
         req.setAttribute("projets", projets);
 
         String successMessage = req.getParameter("successMessage");

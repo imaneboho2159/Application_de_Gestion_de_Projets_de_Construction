@@ -15,7 +15,7 @@ public class TacheDao {
     }
 
     public void ajouterTache(Tache tache) throws SQLException {
-        String query = "INSERT INTO tache (projet_id, description, date_debut, date_fin) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO tache (id_projet, description, Date_De_Début, Date_De_Fin) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, tache.getId_projet());
             stmt.setString(2, tache.getDescription());
@@ -45,26 +45,7 @@ public class TacheDao {
         return taches;
     }
 
-    public List<Tache> getTachesList() throws SQLException {
-        List<Tache> taches = new ArrayList<>();
-        String query = "SELECT * FROM tache";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                Tache tache = new Tache(
-                        resultSet.getInt("id_tache"),
-                        resultSet.getInt("id_projet"),
-                        resultSet.getString("description"),
-                        resultSet.getDate("Date_de_Début"),
-                        resultSet.getDate("Date_de_Fin")
-                );
-                taches.add(tache);
-            }
-        }
-        return taches;
-    }
 
     public Tache getTacheById(int idTache) throws SQLException {
         String query = "SELECT * FROM tache WHERE id_tache = ?";

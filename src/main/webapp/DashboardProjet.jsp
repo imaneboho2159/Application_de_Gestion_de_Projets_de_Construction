@@ -176,7 +176,10 @@
                             <i class="bi bi-pencil"></i>
                         </a>
 
-                        <a href="TacheServlet?action=delete&tacheId=<%= tache.getId_tache()%> %>" class="icon-btn btn-supprimer" title="Supprimer la Tâche" onclick="return confirm('Voulez-vous supprimer cette tâche ?');">
+                        <a href="SupprimerTache?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>"
+                           class="icon-btn btn-supprimer"
+                           title="Supprimer la Tâche"
+                           onclick="return confirm('Voulez-vous supprimer cette tâche ?');">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>

@@ -25,7 +25,6 @@ public class TacheDao {
         }
     }
 
-    // Get all tasks for a project
     public List<Tache> getTachesByProjetId(int projetId) throws SQLException {
         List<Tache> taches = new ArrayList<>();
         String query = "SELECT * FROM tache WHERE id_projet = ?";
@@ -34,7 +33,8 @@ public class TacheDao {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Tache tache = new Tache(
-                        rs.getInt("id_projet"),
+                        rs.getInt("id_tache"),
+                        rs.getInt("id_projet"), // Set id_projet correctly
                         rs.getString("description"),
                         rs.getDate("Date_de_Début"),
                         rs.getDate("Date_de_Fin")
@@ -44,7 +44,6 @@ public class TacheDao {
         }
         return taches;
     }
-
 
     public List<Tache> getTachesList() throws SQLException {
         List<Tache> taches = new ArrayList<>();
@@ -67,12 +66,11 @@ public class TacheDao {
         return taches;
     }
 
-    public Tache getTacheById(int id) throws SQLException {
+    public Tache getTacheById(int idTache) throws SQLException {
         String query = "SELECT * FROM tache WHERE id_tache = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, idTache);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Tache(
@@ -88,19 +86,18 @@ public class TacheDao {
         return null;
     }
 
-
-
     public boolean updateTache(Tache tache) throws SQLException {
-        String query = "UPDATE tache SET description = ?, Date_de_Début = ?, Date_de_Fin = ? WHERE id_tache = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        String query = "UPDATE tache SET description = ?, Date_de_Début = ?, Date_de_Fin = ? WHERE id_tache = ? AND id_projet = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, tache.getDescription());
             preparedStatement.setDate(2, tache.getDate_de_Début());
             preparedStatement.setDate(3, tache.getDate_de_Fin());
             preparedStatement.setInt(4, tache.getId_tache());
-
-            return preparedStatement.executeUpdate() > 0;
+            preparedStatement.setInt(5, tache.getId_projet());
+            preparedStatement.executeUpdate();
         }
+        return true;
     }
 
     public boolean deleteTache(int id) throws SQLException {
@@ -111,18 +108,4 @@ public class TacheDao {
             return preparedStatement.executeUpdate() > 0;
         }
     }
-
-    public boolean projetExiste(int projectId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM Projet WHERE id_projet = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, projectId);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next() && resultSet.getInt(1) > 0;
-            }
-        }
-    }
 }
-
-

@@ -96,7 +96,10 @@
 <div class="navbar">
     <a href="index.jsp" class="navbar-brand">Construction<span style="color: #D76C82;">Xpert</span></a>
     <div>
-        <a href="ProjectServlet" class="btn btn-custom">Projets</a>
+        <form action="ProjectServlet">
+            <input name="action" type="hidden" value="list">
+            <button type="submit" class="btn btn-custom">Projets</button>
+        </form>
     </div>
 </div>
 

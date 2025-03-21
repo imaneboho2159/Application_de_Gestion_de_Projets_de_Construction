@@ -62,17 +62,17 @@ public class TacheServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Get form data
+
             String projectIdStr = request.getParameter("projectId");
             String description = request.getParameter("taskDescription");
             String startDateStr = request.getParameter("startDate");
             String endDateStr = request.getParameter("endDate");
 
-            // Log the input data
+
             System.out.println("Ajout de tâche - projectId: " + projectIdStr + ", description: " + description +
                     ", startDate: " + startDateStr + ", endDate: " + endDateStr);
 
-            // Validate inputs
+
             if (projectIdStr == null || projectIdStr.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID du projet manquant.");
                 return;
@@ -96,14 +96,14 @@ public class TacheServlet extends HttpServlet {
                 return;
             }
 
-            // Create and add the task
+
             Tache tache = new Tache(projectId, description, startDate, endDate);
             tacheDao.ajouterTache(tache);
 
-            // Log success
+
             System.out.println("Tâche ajoutée avec succès pour projectId: " + projectId);
 
-            // Redirect to view the project
+
             response.sendRedirect("ViewProjetServlet?id=" + projectId);
 
         } catch (SQLException e) {

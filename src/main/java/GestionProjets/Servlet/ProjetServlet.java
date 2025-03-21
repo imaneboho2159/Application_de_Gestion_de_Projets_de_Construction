@@ -28,20 +28,18 @@ public class ProjetServlet extends HttpServlet {
     @Override
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Projet> projets = projetDao.getProjetList();
-        req.setAttribute("projets", projets);
+        String action = req.getParameter("action");
+        if (action == null) {
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
 
-        String successMessage = req.getParameter("successMessage");
-        String errorMessage = req.getParameter("errorMessage");
-
-        if (successMessage != null) {
-            req.setAttribute("successMessage", successMessage);
         }
-        if (errorMessage != null) {
-            req.setAttribute("errorMessage", errorMessage);
+        else if (action.equals("list")) {
+            List<Projet> projets = projetDao.getProjetList();
+            req.setAttribute("projets", projets);
+
+            req.getRequestDispatcher("ListProjet.jsp").forward(req, resp);
         }
 
-        req.getRequestDispatcher("ListProjet.jsp").forward(req, resp);
     }
 
 

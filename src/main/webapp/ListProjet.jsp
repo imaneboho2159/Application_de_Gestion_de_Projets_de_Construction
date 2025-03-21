@@ -174,18 +174,11 @@
     </div>
 </div>
 
-<div class="main-content">
 
-    <div class="sidebar">
-
-        <a href="index.jsp">🏠 Accueil</a>
-        <a href="projects.jsp">📋 Projets</a>
-        <a href="Logout">🚪 Déconnexion</a>
-    </div>
 
     <div class="container-content">
         <div class="project-header">
-            <h4>Projects Overview</h4>
+            <h4>Projects </h4>
         </div>
         <%
             List<Projet> projets = (List<Projet>) request.getAttribute("projets");

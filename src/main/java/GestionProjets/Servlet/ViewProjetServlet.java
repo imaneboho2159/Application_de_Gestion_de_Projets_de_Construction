@@ -46,12 +46,12 @@ public class ViewProjetServlet extends HttpServlet {
                 return;
             }
 
-            // Fetch and log tasks
+
             List<Tache> taches = tacheDao.getTachesByProjetId(projectId);
             System.out.println("Projet ID: " + projectId + ", Nombre de tâches trouvées: " +
                     (taches != null ? taches.size() : "null"));
 
-            // Log task details if any
+
             if (taches != null && !taches.isEmpty()) {
                 for (Tache t : taches) {
                     System.out.println("Tâche: " + t.getDescription() + ", Début: " + t.getDate_de_Début() +

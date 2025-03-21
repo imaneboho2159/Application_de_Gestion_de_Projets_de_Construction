@@ -68,7 +68,7 @@
 <div class="navbar">
     <a href="index.jsp" class="navbar-brand">Construction<span style="color: #D76C82;">Xpert</span></a>
     <div>
-        <a href="ListProjet.jsp" class="btn btn-custom">Projets</a>
+        <a href="ProjectServlet" class="btn btn-custom">Projets</a>
     </div>
 </div>
 

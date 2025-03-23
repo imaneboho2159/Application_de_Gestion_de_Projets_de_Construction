@@ -59,7 +59,7 @@ public class ModifierTache extends HttpServlet {
 
                 Tache tache = new Tache(idTache, idProjet, description, dateDeDebut, dateDeFin);
                 tacheDao.updateTache(tache);
-                resp.sendRedirect("ViewProjetServlet?id=" + idProjet);
+                resp.sendRedirect("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id_projet=" + idProjet);
             } catch (SQLException e) {
                 throw new ServletException(e);
             }

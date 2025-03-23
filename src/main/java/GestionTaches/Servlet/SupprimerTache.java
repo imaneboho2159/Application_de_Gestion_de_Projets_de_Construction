@@ -33,18 +33,18 @@ public class SupprimerTache extends HttpServlet {
             try {
                 int tacheId = Integer.parseInt(idParam);
                 if (tacheDao.deleteTache(tacheId)) {
-                    resp.sendRedirect("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id="+projectId);
+                    resp.sendRedirect("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id_projet="+projectId);
                 } else {
                     req.setAttribute("errorMessage", "Tâche non supprimée ou inexistante");
-                    req.getRequestDispatcher("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id="+projectId).forward(req, resp);
+                    req.getRequestDispatcher("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id_projet="+projectId).forward(req, resp);
                 }
             } catch (Exception e) {
                 req.setAttribute("errorMessage", "Erreur : " + e.getMessage());
-                req.getRequestDispatcher("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id="+projectId).forward(req, resp);
+                req.getRequestDispatcher("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id_projet="+projectId).forward(req, resp);
             }
         } else {
             req.setAttribute("errorMessage", "ID tâche manquant");
-            req.getRequestDispatcher("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id="+projectId).forward(req, resp);
+            req.getRequestDispatcher("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id_projet="+projectId).forward(req, resp);
         }
     }
     }

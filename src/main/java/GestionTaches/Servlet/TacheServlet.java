@@ -103,8 +103,7 @@ public class TacheServlet extends HttpServlet {
 
             System.out.println("Tâche ajoutée avec succès pour projectId: " + projectId);
 
-
-            response.sendRedirect("ViewProjetServlet?id=" + projectId);
+            response.sendRedirect("/Application-de-Gestion-de-Projets-de-Construction/ViewProjetServlet?id_projet=" + projectId);
 
         } catch (SQLException e) {
             System.out.println("Erreur SQL lors de l'ajout de la tâche : " + e.getMessage());

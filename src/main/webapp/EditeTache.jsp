@@ -75,7 +75,7 @@
 
 <body>
 <%
-    Tache tache = (git add) request.getAttribute("tache");
+    Tache tache = (Tache) request.getAttribute("tache");
     String projectId = (String) request.getAttribute("projectId");
     if (tache == null) {
         response.sendRedirect("DashboardProjet.jsp?errorMessage=Aucune tâche trouvée");

@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConstructionXpert - Ajouter une Tache</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body {
-            background-color: #EBE8DB;
+            background-color: #f1ddbf;
             height: 100vh;
             margin: 0;
             display: flex;
@@ -17,20 +18,21 @@
         }
 
         .navbar {
-            background-color: #FFFFFF;
-            border-bottom: 2px solid #B03052;
+            background-color: #d9d0b4;
+            border-bottom: 2px solid #7d6b57;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 20px;
             font-weight: bold;
-            color: #B03052;
+            color: #7d6b57;
         }
 
         .navbar-brand {
-            color: #B03052;
+            color: #7d6b57;
             font-weight: bold;
+            text-decoration: none;
         }
 
         .container {
@@ -39,7 +41,7 @@
         }
 
         .form-container {
-            background: #FFFFFF;
+            background: #d9d0b4;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -48,15 +50,23 @@
         }
 
         .btn-custom {
-            background-color: #D76C82;
-            color: #FFFFFF;
-            border: none;
+            border: 2px solid #7d6b57;
+            color: #7d6b57;
             font-size: 16px;
-            padding: 10px;
+            font-weight: bold;
+            padding: 8px 16px;
+            background-color: transparent;
+            border-radius: 5px;
+            text-decoration: none;
         }
 
         .btn-custom:hover {
-            background-color: #B03052;
+            background-color: #7d6b57;
+            color: #FFFFFF;
+        }
+
+        .alert {
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -64,46 +74,48 @@
 <body>
 
 <div class="navbar">
-    <a href="index.jsp" class="navbar-brand">Construction<span style="color: #D76C82;">Xpert</span></a>
+    <a href="index.jsp" class="navbar-brand">Construction<span style="color: #7d6b57;">Xpert</span></a>
     <div>
-        <a href="ListProjet.jsp" class="btn btn-custom">Retour aux Projets</a>
+        <form action="ProjectServlet">
+            <input name="action" type="hidden" value="list">
+            <button type="submit" class="btn-custom">Projets</button>
+        </form>
     </div>
 </div>
 
-
 <div class="container">
     <div class="form-container">
-        <h4>Ajouter une Tâche</h4>
+        <h4 class="mb-3">Ajouter une Tâche</h4>
         <form action="TacheServlet" method="post">
 
-
-            <div class="mb-2">
+            <div class="mb-3">
                 <label for="task-description" class="form-label">Description</label>
                 <textarea class="form-control" id="task-description" name="taskDescription" rows="2" required></textarea>
             </div>
-            <div class="mb-2">
+
+            <div class="mb-3">
                 <label for="start-date" class="form-label">Date de Début</label>
                 <input type="date" class="form-control" id="start-date" name="startDate" required>
             </div>
-            <div class="mb-2">
+
+            <div class="mb-3">
                 <label for="end-date" class="form-label">Date de Fin</label>
                 <input type="date" class="form-control" id="end-date" name="endDate" required>
-                    <%
-    String projectId = request.getParameter("projectId");
-    if (projectId != null && projectId.matches("\\d+")) {
-%>
-                <input type="hidden" name="projectId" value="<%= projectId %>">
-                    <% } else { %>
-                <p style="color:red;">Erreur : ID du projet manquant ou invalide !</p>
-                    <% } %>
+            </div>
 
+            <% String projectId = request.getParameter("projectId");
+                if (projectId != null && projectId.matches("\\d+")) { %>
+            <input type="hidden" name="projectId" value="<%= projectId %>">
+            <% } else { %>
+            <div class="alert alert-danger" role="alert">Erreur : ID du projet manquant ou invalide !</div>
+            <% } %>
 
-
-                <button type="submit" class="btn btn-custom">Valider</button>
+            <button type="submit" class="btn-custom">Valider</button>
         </form>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

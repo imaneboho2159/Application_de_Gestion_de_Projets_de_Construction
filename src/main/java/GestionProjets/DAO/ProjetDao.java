@@ -108,9 +108,9 @@ public class ProjetDao {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, id);
-            int rowsAffected = preparedStatement.executeUpdate(); // Get affected rows
+            int rowsAffected = preparedStatement.executeUpdate();
 
-            return rowsAffected > 0; // If at least one row was deleted, return true
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }

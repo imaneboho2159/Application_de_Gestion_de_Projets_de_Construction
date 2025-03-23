@@ -21,27 +21,52 @@ public class ModifierServlet extends HttpServlet {
 
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idParam = req.getParameter("id_projet");
+
+        if (idParam != null && !idParam.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idParam);
+                Projet projet = projetDao.getProjetById(id);
+                req.setAttribute("projet", projet);
+                req.getRequestDispatcher("EditeProjet.jsp").forward(req, resp);  // Affiche le formulaire d'édition
+            } catch (NumberFormatException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID invalide");
+            }
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètre 'id_projet' manquant");
+        }
+    }
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idParam = req.getParameter("id_projet");
 
-        int id = Integer.parseInt(req.getParameter("id_projet"));
-        String nom = req.getParameter("nom");
-        String Description = req.getParameter("Description");
-        Date Date_de_Début = java.sql.Date.valueOf(req.getParameter("date_debut"));
-        Date Date_de_Fin = java.sql.Date.valueOf(req.getParameter("date_fin"));
-        Double Budget = Double.valueOf(req.getParameter("budget"));
+        if (idParam != null && !idParam.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idParam);
+                String nom = req.getParameter("nom");
+                String description = req.getParameter("Description");
+                Date dateDebut = java.sql.Date.valueOf(req.getParameter("date_debut"));
+                Date dateFin = java.sql.Date.valueOf(req.getParameter("date_fin"));
+                Double budget = Double.valueOf(req.getParameter("budget"));
 
-        Projet projet = new Projet(nom,Description,Date_de_Début,Date_de_Fin,Budget);
+                Projet projet = new Projet(nom, description, dateDebut, dateFin, budget);
 
-        boolean isUpdated = projetDao.updateProjet(projet,id);
-        if (isUpdated) {
-            resp.sendRedirect("ProjectServlet?id=" +id);
+
+                boolean isUpdated = projetDao.updateProjet(projet, id);
+                if (isUpdated) {
+                    resp.sendRedirect("ProjectServlet?id=" + id);  // Redirection après mise à jour réussie
+                } else {
+                    req.setAttribute("errorMessage", "La mise à jour a échoué !");
+                    req.getRequestDispatcher("EditeProjet.jsp").forward(req, resp);
+                }
+            } catch (NumberFormatException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID invalide");
+            }
         } else {
-            resp.sendRedirect("EditeProjet.jsp?id=" +id);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètre 'id_projet' manquant");
         }
-
-
-    }
-}
+    }}

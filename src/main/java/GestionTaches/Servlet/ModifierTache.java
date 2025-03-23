@@ -34,7 +34,7 @@ public class ModifierTache extends HttpServlet {
             throw new ServletException("Missing required parameters");
         }
 
-        int tacheId = Integer.parseInt(tacheIdStr); // Line 34
+        int tacheId = Integer.parseInt(tacheIdStr);
         try {
             Tache tache = tacheDao.getTacheById(tacheId);
             req.setAttribute("tache", tache);

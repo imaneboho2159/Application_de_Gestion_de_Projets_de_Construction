@@ -37,7 +37,7 @@ public class ProjetServlet extends HttpServlet {
             List<Projet> projets = projetDao.getProjetList();
             req.setAttribute("projets", projets);
 
-            req.getRequestDispatcher("ListProjet.jsp").forward(req, resp);
+            req.getRequestDispatcher("/ListProjet.jsp").forward(req, resp);
         }
 
     }
@@ -62,7 +62,7 @@ public class ProjetServlet extends HttpServlet {
 
             Projet projet = new Projet(Nom, description, Date_de_Debut, Date_de_Fin, Budget);
             projetDao.AjouterProjet(projet);
-            resp.sendRedirect("ProjectServlet");
+            resp.sendRedirect("/Application-de-Gestion-de-Projets-de-Construction/ProjectServlet?action=list");
 
 
         } catch (Exception e) {

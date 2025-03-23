@@ -3,24 +3,21 @@
 <%@ page import="GestionTaches.Model.Tache" %>
 <%@ page import="GestionTaches.DAO.TacheDao" %>
 <%@ page import="GestionRessorces.DAO.RessorceDao" %>
-<%@ page import="GestionRessorces.Model.Ressorce" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="GestionRessorces.DAO.RessorceDao" %>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConstructionXpert - Détails du Projet</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body {
-            background-color: #EBE8DB;
+            background-color: #f1ddbf;
             height: 100vh;
             margin: 0;
             display: flex;
@@ -28,20 +25,22 @@
         }
 
         .navbar {
-            background-color: #FFFFFF;
-            border-bottom: 2px solid #B03052;
+            background-color: #d9d0b4;
+            border-bottom: 2px solid #7d6b57;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 20px;
             font-weight: bold;
-            color: #B03052;
+            color: #7d6b57;
         }
 
         .navbar-brand {
-            color: #B03052;
+            color: #7d6b57;
             font-weight: bold;
+            text-decoration: none;
+            /* Remove underline */
         }
 
         .container {
@@ -50,7 +49,7 @@
         }
 
         .project-details {
-            background: #FFFFFF;
+            background: #d9d0b4;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -60,38 +59,37 @@
         .icon-btn {
             font-size: 16px;
             padding: 8px 12px;
-            height: 40px;
-            line-height: 24px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border: none;
-            text-decoration: none;
+            text-decoration: none !important;
+            /* Ensure underline is removed completely */
+            color: #7d6b57;
+            background-color: transparent;
+        }
+
+        .icon-btn:hover {
             color: #FFFFFF;
+            background-color: #7d6b57;
+            border-radius: 5px;
         }
 
-        .btn-custom {
-            background-color: #D76C82;
+        .btn-ajouter {
+            border: 2px solid #7d6b57;
+            color: #7d6b57;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 8px 16px;
+            background-color: transparent;
+            border-radius: 5px;
+            text-decoration: none;
+            /* Remove underline */
         }
 
-        .btn-custom:hover {
-            background-color: #B03052;
-        }
-
-        .btn-modifier {
-            background-color: #f0ad4e;
-        }
-
-        .btn-modifier:hover {
-            background-color: #c77c2a;
-        }
-
-        .btn-supprimer {
-            background-color: #d9534f;
-        }
-
-        .btn-supprimer:hover {
-            background-color: #b52b27;
+        .btn-ajouter:hover {
+            background-color: #7d6b57;
+            color: #FFFFFF;
         }
 
         .button-group {
@@ -103,6 +101,14 @@
         .task-resources {
             margin-left: 20px;
             margin-top: 10px;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+        }
+
+        .list-group-item {
+            background: #f8f1e7;
         }
     </style>
 </head>
@@ -127,33 +133,39 @@
 %>
 
 <div class="navbar">
-    <a href="index.jsp" class="navbar-brand">Construction<span style="color: #D76C82;">Xpert</span></a>
-    <div class="button-group">
-        <a href="ProjectServlet" class="icon-btn btn-custom" title="Retour aux Projets">
-            <i class="bi bi-arrow-left"></i>
-        </a>
+    <a href="index.jsp" class="navbar-brand">Construction<span style="color: #7d6b57;">Xpert</span></a>
+    <div>
+        <form action="ProjectServlet">
+            <input name="action" type="hidden" value="list">
+            <button type="submit" class="btn-custom">Projets</button>
+        </form>
     </div>
 </div>
 
 <div class="container">
     <div class="project-details">
         <div class="d-flex justify-content-between align-items-center">
-            <h4><%= projet.getNom() %></h4>
-            <a href="ModifierServlet?id=<%= projet.getId_projet() %>" class="icon-btn btn-modifier" title="Modifier le Projet">
+            <h4>
+                <%= projet.getNom() %>
+            </h4>
+            <a href="updateServlet?id_projet=<%= projet.getId_projet() %>" class="icon-btn" title="Modifier le Projet">
                 <i class="bi bi-pencil"></i>
             </a>
         </div>
-        <p><strong>Description:</strong> <%= projet.getDescription() %></p>
-        <p><strong>Dates:</strong> <%= projet.getDate_de_Début() %> - <%= projet.getDate_de_Fin() %></p>
-        <p><strong>Budget:</strong> DH<%= projet.getBudget() %></p>
+        <p><strong>Description:</strong>
+            <%= projet.getDescription() %>
+        </p>
+        <p><strong>Dates:</strong>
+            <%= projet.getDate_de_Début() %> -
+            <%= projet.getDate_de_Fin() %>
+        </p>
+        <p><strong>Budget:</strong> DH
+            <%= projet.getBudget() %>
+        </p>
     </div>
 
     <div class="mb-3">
-        <div class="button-group">
-            <a href="AjouterTache.jsp?projectId=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Tâche">
-                <i class="bi bi-plus-circle"></i>
-            </a>
-        </div>
+        <a href="AjouterTache.jsp?projectId=<%= projet.getId_projet() %>" class="btn-ajouter">Ajouter une Tâche</a>
     </div>
 
     <div class="mt-4">
@@ -169,51 +181,17 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <span><%= tache.getDescription()  %> <%= tache.getId_tache()%>(Début: <%= tache.getDate_de_Début() %>, Fin: <%= tache.getDate_de_Fin() %>)</span>
                     <div class="button-group">
-                        <a href="AjouterRessource.jsp?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>" class="icon-btn btn-custom" title="Ajouter une Ressource">
+                        <a href="AjouterRessource.jsp?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>" class="icon-btn" title="Ajouter une Ressource">
                             <i class="bi bi-plus-circle"></i>
                         </a>
-                        <a href="ModifierTache?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>" class="icon-btn btn-modifier" title="Modifier la Tâche">
+                        <a href="ModifierTache?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>" class="icon-btn" title="Modifier la Tâche">
                             <i class="bi bi-pencil"></i>
                         </a>
-
-                        <a href="SupprimerTache?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>"
-                           class="icon-btn btn-supprimer"
-                           title="Supprimer la Tâche"
-                           onclick="return confirm('Voulez-vous supprimer cette tâche ?');">
+                        <a href="SupprimerTache?tacheId=<%= tache.getId_tache() %>&projectId=<%= projet.getId_projet() %>" class="icon-btn" title="Supprimer la Tâche" onclick="return confirm('Voulez-vous supprimer cette tâche ?');">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>
                 </div>
-                <%--                <div class="task-resources">--%>
-                <%--                    <h6>Ressources :</h6>--%>
-                <%--                    <%--%>
-                <%--                        List<Ressource> ressources = null;--%>
-                <%--                        try {--%>
-                <%--                            ressources = ressourceDao.getRessourcesByTacheId(tache.getIdTache());--%>
-                <%--                        } catch (SQLException e) {--%>
-                <%--                            request.setAttribute("errorMessage", "Erreur lors de la récupération des ressources : " + e.getMessage());--%>
-                <%--                        }--%>
-                <%--                        if (ressources == null || ressources.isEmpty()) {--%>
-                <%--                    %>--%>
-                <%--                    <p class="text-muted">Aucune ressource trouvée pour cette tâche.</p>--%>
-                <%--                    <% } else { %>--%>
-                <%--                    <ul class="list-group">--%>
-                <%--                        <% for (Ressource ressource : ressources) { %>--%>
-                <%--                        <li class="list-group-item d-flex justify-content-between align-items-center">--%>
-                <%--                            <span><%= ressource.getName() %> (Type: <%= ressource.getType() %>, Quantité: <%= ressource.getQuantity() %>)</span>--%>
-                <%--                            <div class="button-group">--%>
-                <%--                                <a href="ModifierRessource.jsp?ressourceId=<%= ressource.getIdRessource() %>&tacheId=<%= tache.getIdTache() %>&projectId=<%= projet.getIdProjet() %>" class="icon-btn btn-modifier" title="Modifier la Ressource">--%>
-                <%--                                    <i class="bi bi-pencil"></i>--%>
-                <%--                                </a>--%>
-                <%--                                <a href="RessourceServlet?action=delete&ressourceId=<%= ressource.getIdRessource() %>&tacheId=<%= tache.getIdTache() %>&projectId=<%= projet.getIdProjet() %>" class="icon-btn btn-supprimer" title="Supprimer la Ressource" onclick="return confirm('Voulez-vous supprimer cette ressource ?');">--%>
-                <%--                                    <i class="bi bi-trash"></i>--%>
-                <%--                                </a>--%>
-                <%--                            </div>--%>
-                <%--                        </li>--%>
-                <%--                        <% } %>--%>
-                <%--                    </ul>--%>
-                <%--                    <% } %>--%>
-                <%--                </div>--%>
             </li>
             <% } %>
             <% } %>
@@ -222,12 +200,14 @@
             String errorMessage = (String) request.getAttribute("errorMessage");
             if (errorMessage != null) {
         %>
-        <div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+        <div class="alert alert-danger" role="alert">
+            <%= errorMessage %>
+        </div>
         <% } %>
     </div>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

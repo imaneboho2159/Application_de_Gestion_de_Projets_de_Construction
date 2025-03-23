@@ -32,7 +32,7 @@ public class SupprimerServlet extends HttpServlet {
             boolean deleted = projetDao.deleteProjet(id);
 
             if (deleted) {
-                resp.sendRedirect("ProjectServlet?successMessage=Projet supprime avec succes");
+                resp.sendRedirect("/Application-de-Gestion-de-Projets-de-Construction/ProjectServlet?action=list");
             } else {
                 resp.sendRedirect("ProjectServlet?errorMessage=Aucun projet trouvé avec cet ID");
             }

@@ -4,4 +4,5 @@
 <img width="490" alt="image" src="https://github.com/user-attachments/assets/0d7047c5-1337-4980-8088-22015626ec1c" />
 
 
-<img width="472" alt="diagram de séquence" src="https://github.com/user-attachments/assets/b67e2558-b990-4b01-82bf-d25eb603392d" />
+<img width="678" alt="image" src="https://github.com/user-attachments/assets/226d2bad-c99b-4e61-b026-38c69e8fc1bf" />
+
